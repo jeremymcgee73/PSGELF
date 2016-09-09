@@ -5,7 +5,7 @@ A PowerShell Module to send logs to a GELF server like Graylog.
 This repository contains PowerShell functions to send logs to a compatible GELF server like Graylog. I have tested this module on Powershell 4/5 on Windows and lightly tested with Powershell 6 on CentOS 7 and OSX.
 
 ##Getting Started
-You can install this module by copying the PSGELF folder to your PowerShell Modules directory.
+You can install this module by copying the PSGELF folder to your PowerShell Modules directory. You can also install from the Powershell Gallery `Install-Module -Name PSGELF`
 
 ##Functions
 |  PSGELF Function  |  Description  |
