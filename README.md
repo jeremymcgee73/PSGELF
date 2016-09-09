@@ -12,8 +12,33 @@ You can install this module by copying the PSGELF folder to your PowerShell Modu
 | ------------- | ------------- |
 | Send-PSGelfTCP | Sends a GELF message via UDP. This function does not accept Pipeline input. |
 | Send-PSGelfUDP | Sends a GELF message via TCP. This function does not accept Pipeline input. |
-| Send-PSGelfTCPFromObject | This function sends an PSObject to Graylog via TCP to a server supporting GELF. This function is designed to accept Pipeline from Get-WinEvent. But, accepts any PSOBJECT. |
-| Send-PSGelfUDPFromObject | This function sends an PSObject to Graylog via UDP to a server supporting GELF. This function is designed to accept Pipeline from Get-WinEvent. But, accepts any PSOBJECT. |
+| Send-PSGelfTCPFromObject | This function sends an PSObject via TCP to a server supporting GELF. |
+| Send-PSGelfUDPFromObject | This function sends an PSObject  via UDP to a server supporting GELF. |
+
+##Examples
+
+Sending a Short Message:
+```
+Send-PSGelfTCP -GelfServer graylog -Port 12202 -ShortMessage "This is a short Message"
+```
+
+Sending a Message with all of the default fields:
+```
+        Send-PSGelfUDP -GelfServer "graylog" `
+            -Port 12201 `
+            -ShortMessage "Short Message" `
+            -FullMessage "Full Message" `
+            -HostName "dc01" `
+            -DateTime $(Get-Date) `
+            -Level 5 `
+            -Line 255 `
+            -File "C:\logs" `
+            -AdditionalField @{UniqueID = 1337}
+```
+Sending 10 Windows Events:
+```
+Get-WinEvent Setup -MaxEvents 10 | Send-PSGelfTCPFromObject -GelfServer graylog -Port 12202
+```
 
 ##Help
 You can use `Get-Command -Module PSGELF` to get a list of cmdlets in the module.
