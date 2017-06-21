@@ -24,6 +24,7 @@ function Send-PSGelfTCPFromObject
     Process
     {
         try {
+            
             $TcpClient = New-Object System.Net.Sockets.TcpClient
 
             #I am using ConnectAsync because connect isnt supported in .net core
@@ -35,6 +36,8 @@ function Send-PSGelfTCPFromObject
 
             $TcpStream = $TcpClient.GetStream()
 
+            #Repair-PasGelfObject changes fields names so you can easily pipe Get-WinEvent to this function
+            #It also adds and underscore to non default fields.
             $RepairedGelfMessage = Repair-PSGelfObject -GelfMessage $GelfMessage
 
             $ConvertedJSON = [System.Text.Encoding]::ASCII.GetBytes($($RepairedGelfMessage | ConvertTo-Json -Compress))

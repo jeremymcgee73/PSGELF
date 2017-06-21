@@ -33,9 +33,10 @@ function Send-PSGelfUDPFromObject
         $EndPoint = New-Object System.Net.IPEndPoint($Address, $Port)
         $UdpClient = new-Object System.Net.Sockets.UdpClient        
 
+        #Repair-PasGelfObject changes fields names so you can easily pipe Get-WinEvent to this function
+        #It also adds and underscore to non default fields.
         $RepairedGelfMessage = Repair-PSGelfObject -GelfMessage $GelfMessage
 
-        #$CompressedJSON = Compress-PSGelfString($RepairedGelfMessage | ConvertTo-Json -Compress)
         $CompressedJSON = [System.Text.Encoding]::ASCII.GetBytes($($RepairedGelfMessage | ConvertTo-Json -Compress))
 
         #We only need to chunk if the packet is greater than 8192 bytes. 
@@ -69,10 +70,9 @@ function Send-PSGelfUDPFromObject
                 $EndPacketIndex = $StartPacketIndex + $ChunkSize - 1
 
                 $ChunkData = $CompressedJSON[$StartPacketIndex .. $EndPacketIndex]
-
                 $ChunkPacket = $HeaderBytes + $GelfMessageID + $SequenceNum + $TotalChunks + $ChunkData
+                
                 #UDP.Send returns the length of the data sent. We don't need this.
-
                 $UDPClient.SendAsync($ChunkPacket, $ChunkPacket.Length,$EndPoint) | Out-Null
             }
 
