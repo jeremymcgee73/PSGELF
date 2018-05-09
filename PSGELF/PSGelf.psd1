@@ -15,7 +15,7 @@ RootModule = '.\PSGELF.psm1'
 ModuleVersion = '1.1'
 
 # Supported PSEditions
-# CompatiblePSEditions = @()
+CompatiblePSEditions = 'Desktop', 'Core'
 
 # ID used to uniquely identify this module
 GUID = '47102774-ae1f-4a98-b5b7-842c0a962166'
@@ -30,10 +30,10 @@ CompanyName = ''
 Copyright = '(c) Jeremy McGee. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'PowerShell module to send GELF log data to compatible servers like Graylog.'
 
 # Minimum version of the PowerShell engine required by this module
-# PowerShellVersion = ''
+PowerShellVersion = '3.0'
 
 # Name of the PowerShell host required by this module
 # PowerShellHostName = ''
