@@ -72,15 +72,9 @@ function Send-PSGelfTCP
         [Parameter()][Hashtable]$AdditionalField
     )
 
-    Begin
-    {
-    }
     Process
     {
         $GelfMessage = New-PSGelfObject @PsBoundParameters
         Send-PSGelfTCPFromObject -GelfServer $GelfServer -Port $Port -GelfMessage $GelfMessage
-    }
-    End
-    {
     }
 }
