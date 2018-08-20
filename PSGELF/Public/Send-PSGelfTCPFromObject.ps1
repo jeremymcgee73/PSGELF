@@ -13,7 +13,13 @@
 .PARAMETER GelfMessage
    Message payload to send (from New-PSGelfObject).
 .EXAMPLE
+   Send a Windows Event Log to GELF server graylog over port 12201.
+
    Get-WinEvent Setup | Send-PSGelfTCPFromObject -GelfServer graylog -Port 12201
+.EXAMPLE
+   Send a Windows Event Log to GELF server graylog over port 12202 and use SSL/TLS.
+
+   Get-WinEvent Setup | Send-PSGelfTCPFromObject -GelfServer graylog -Port 12202 -Encrypt
 #>
 function Send-PSGelfTCPFromObject
 {
