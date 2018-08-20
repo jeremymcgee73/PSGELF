@@ -25,9 +25,6 @@ function Send-PSGelfTCPFromObject
         [Parameter(Mandatory,ValueFromPipeline)][PSCustomObject]$GelfMessage
     )
 
-    Begin
-    {
-    }
     Process
     {
         try {
@@ -59,8 +56,5 @@ function Send-PSGelfTCPFromObject
         Catch {
             $_
         }
-    }
-    End
-    {
     }
 }
