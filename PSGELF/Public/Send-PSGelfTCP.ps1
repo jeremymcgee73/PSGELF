@@ -5,6 +5,8 @@
    Hostname or IP address of the GELF server to send messages to.
 .PARAMETER Port
    Port number used to communicate with the GELF server.
+.PARAMETER Encrypt
+   Use to use SSL/TLS encryption with the GELF server.
 .PARAMETER HostName
    The name of the host, source or application that sent this message.
 .PARAMETER ShortMessage
@@ -53,6 +55,8 @@ function Send-PSGelfTCP
 
         [Parameter(Mandatory)][Int]$Port,
 
+        [Parameter()][Switch]$Encrypt,
+
         [Parameter()][String]$HostName,
 
         [Parameter(Mandatory)][String]$ShortMessage,
@@ -75,6 +79,6 @@ function Send-PSGelfTCP
     Process
     {
         $GelfMessage = New-PSGelfObject @PsBoundParameters
-        Send-PSGelfTCPFromObject -GelfServer $GelfServer -Port $Port -GelfMessage $GelfMessage
+        Send-PSGelfTCPFromObject -GelfServer $GelfServer -Port $Port -Encrypt:$Encrypt.IsPresent -GelfMessage $GelfMessage
     }
 }
