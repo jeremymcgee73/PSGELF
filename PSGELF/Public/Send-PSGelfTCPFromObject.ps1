@@ -8,6 +8,8 @@
    Hostname or IP address of the GELF server to send messages to.
 .PARAMETER Port
    Port number used to communicate with the GELF server.
+.PARAMETER Encrypt
+   Use to use SSL/TLS encryption with the GELF server.
 .PARAMETER GelfMessage
    Message payload to send (from New-PSGelfObject).
 .EXAMPLE
@@ -22,12 +24,15 @@ function Send-PSGelfTCPFromObject
 
         [Parameter(Mandatory)][Int]$Port,
 
+        [Parameter()][Switch]$Encrypt,
+
         [Parameter(Mandatory,ValueFromPipeline)][PSCustomObject]$GelfMessage
     )
 
     Process
     {
         try {
+            [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { return $true }
 
             $TcpClient = New-Object System.Net.Sockets.TcpClient
 
@@ -38,7 +43,13 @@ function Send-PSGelfTCPFromObject
                 return
             }
 
-            $TcpStream = $TcpClient.GetStream()
+            if ($Encrypt.IsPresent) {
+                $SslStream = New-Object System.Net.Security.SslStream $TcpClient.GetStream(), $false, { return $true }, $null
+                $SslStream.AuthenticateAsClient($GelfServer)
+            }
+            else {
+                $TcpStream = $TcpClient.GetStream()
+            }
 
             #Repair-PasGelfObject changes fields names so you can easily pipe Get-WinEvent to this function
             #It also adds and underscore to non default fields.
@@ -49,9 +60,16 @@ function Send-PSGelfTCPFromObject
             #Graylog needs a NULL byte on the end of the data packet
             $ConvertedJSON = $ConvertedJSON + [Byte]0x00
 
-            $TcpStream.Write($ConvertedJSON, 0, $ConvertedJSON.Length)
-            $TcpStream.Close()
+            if ($Encrypt.IsPresent) {
+                $SslStream.Write($ConvertedJSON, 0, $ConvertedJSON.Length)
+                $SslStream.Close()
+            }
+            else {
+                $TcpStream.Write($ConvertedJSON, 0, $ConvertedJSON.Length)
+                $TcpStream.Close()
+            }
 
+            $TcpClient.Close()
         }
         Catch {
             $_
