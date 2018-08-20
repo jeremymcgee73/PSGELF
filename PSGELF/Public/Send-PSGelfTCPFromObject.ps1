@@ -43,14 +43,6 @@ function Send-PSGelfTCPFromObject
                 return
             }
 
-            if ($Encrypt.IsPresent) {
-                $SslStream = New-Object System.Net.Security.SslStream $TcpClient.GetStream(), $false, { return $true }, $null
-                $SslStream.AuthenticateAsClient($GelfServer)
-            }
-            else {
-                $TcpStream = $TcpClient.GetStream()
-            }
-
             #Repair-PasGelfObject changes fields names so you can easily pipe Get-WinEvent to this function
             #It also adds and underscore to non default fields.
             $RepairedGelfMessage = Repair-PSGelfObject -GelfMessage $GelfMessage
@@ -60,7 +52,10 @@ function Send-PSGelfTCPFromObject
             #Graylog needs a NULL byte on the end of the data packet
             $ConvertedJSON = $ConvertedJSON + [Byte]0x00
 
+            $TcpStream = $TcpClient.GetStream()
             if ($Encrypt.IsPresent) {
+                $SslStream = New-Object System.Net.Security.SslStream $tcpStream, $false, { return $true }, $null
+                $SslStream.AuthenticateAsClient($GelfServer)
                 $SslStream.Write($ConvertedJSON, 0, $ConvertedJSON.Length)
                 $SslStream.Close()
             }
