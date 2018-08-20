@@ -2,7 +2,14 @@
 .Synopsis
    Sends an PSObject to Graylog via TCP.
 .DESCRIPTION
-   This function sends an PSObject to Graylog via TCP to a server supporting GELF. This function should be used if you do want to pipe input.
+   This function sends an PSObject to Graylog via TCP to a server supporting
+   GELF. This function should be used if you do want to pipe input.
+.PARAMETER GelfServer
+   Hostname or IP address of the GELF server to send messages to.
+.PARAMETER Port
+   Port number used to communicate with the GELF server.
+.PARAMETER GelfMessage
+   Message payload to send (from New-PSGelfObject).
 .EXAMPLE
    Get-WinEvent Setup | Send-PSGelfTCPFromObject -GelfServer graylog -Port 12201
 #>
@@ -15,7 +22,7 @@ function Send-PSGelfTCPFromObject
 
         [Parameter(Mandatory)][Int]$Port,
 
-        [Parameter(Mandatory,ValueFromPipeline )][PSCustomObject]$GelfMessage
+        [Parameter(Mandatory,ValueFromPipeline)][PSCustomObject]$GelfMessage
     )
 
     Begin
@@ -24,7 +31,7 @@ function Send-PSGelfTCPFromObject
     Process
     {
         try {
-            
+
             $TcpClient = New-Object System.Net.Sockets.TcpClient
 
             #I am using ConnectAsync because connect isnt supported in .net core
