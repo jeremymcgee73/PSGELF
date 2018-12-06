@@ -38,8 +38,6 @@ function Send-PSGelfTCPFromObject
     Process
     {
         try {
-            [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { return $true }
-
             $TcpClient = New-Object System.Net.Sockets.TcpClient
 
             #I am using ConnectAsync because connect isnt supported in .net core
@@ -60,10 +58,15 @@ function Send-PSGelfTCPFromObject
 
             $TcpStream = $TcpClient.GetStream()
             if ($Encrypt.IsPresent) {
+                $oldSslSettings = [System.Net.ServicePointManager]::ServerCertificateValidationCallback
+                [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { return $true }
+
                 $SslStream = New-Object System.Net.Security.SslStream $tcpStream, $false, { return $true }, $null
                 $SslStream.AuthenticateAsClient($GelfServer)
                 $SslStream.Write($ConvertedJSON, 0, $ConvertedJSON.Length)
                 $SslStream.Close()
+
+                [System.Net.ServicePointManager]::ServerCertificateValidationCallback = $oldSslSettings
             }
             else {
                 $TcpStream.Write($ConvertedJSON, 0, $ConvertedJSON.Length)
