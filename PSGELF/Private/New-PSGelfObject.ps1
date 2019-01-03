@@ -45,7 +45,7 @@
             $Message | Add-Member –MemberType NoteProperty –Name full_message –Value $FullMessage
         }
         if ($DateTime) {
-            $TimeStampConversion = Get-Date($DateTime).ToUniversalTime() -uformat "%s"
+            $TimeStampConversion = [double]$(Get-Date($DateTime).ToUniversalTime() -uformat "%s")
             $Message | Add-Member –MemberType NoteProperty –Name timestamp  –Value $TimeStampConversion
         }
         if ($Level ) {
