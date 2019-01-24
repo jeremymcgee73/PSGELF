@@ -19,8 +19,8 @@
         }
 
         if($GelfMessage.TimeCreated) {
-            Write-Verbose 'There was a property named TimeCreated. We are going to infer that is what the timestamp needs to be.'
-            $GelfMessage = $GelfMessage | Select-Object @{Name="timestamp";Expression={Get-Date($_."TimeCreated").ToUniversalTime() -uformat "%s"}},* -ExcludeProperty TimeCreated
+            Write-Verbose 'There was a property named TimeCreated. We are going to infer that is what the timestamp needs to be.'      
+            $GelfMessage = $GelfMessage | Select-Object @{Name="timestamp";Expression={[double]$(Get-Date($_."TimeCreated").ToUniversalTime() -uformat "%s")}},* -ExcludeProperty TimeCreated
         }
 
         if($GelfMessage.ID) {
