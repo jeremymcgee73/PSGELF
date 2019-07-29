@@ -3,28 +3,15 @@
     [cmdletbinding()]
     Param
     (
-        [Parameter(Mandatory)][String]$GelfServer,
-
-        [Parameter(Mandatory)][Int]$Port,
-
         [Parameter()][switch]$Encrypt,
-
         [Parameter()][String]$HostName,
-
         [Parameter(Mandatory)][String]$ShortMessage,
-
         [Parameter()][String]$FullMessage,
-
         [Parameter()][System.DateTime]$DateTime,
-
         [Parameter()][Int]$Level,
-
         [Parameter()][String]$Facility,
-
         [Parameter()][Int]$Line,
-
         [Parameter()][String]$File,
-
         [Parameter()][Hashtable]$AdditionalField
     )
 

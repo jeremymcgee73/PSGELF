@@ -52,33 +52,27 @@ function Send-PSGelfTCP
     Param
     (
         [Parameter(Mandatory)][String]$GelfServer,
-
         [Parameter(Mandatory)][Int]$Port,
-
         [Parameter()][Switch]$Encrypt,
-
         [Parameter()][String]$HostName,
-
         [Parameter(Mandatory)][String]$ShortMessage,
-
         [Parameter()][String]$FullMessage,
-
         [Parameter()][System.DateTime]$DateTime,
-
         [Parameter()][Int]$Level,
-
         [Parameter()][String]$Facility,
-
         [Parameter()][Int]$Line,
-
         [Parameter()][String]$File,
-
         [Parameter()][Hashtable]$AdditionalField
     )
 
     Process
     {
-        $GelfMessage = New-PSGelfObject @PsBoundParameters
-        Send-PSGelfTCPFromObject -GelfServer $GelfServer -Port $Port -Encrypt:$Encrypt.IsPresent -GelfMessage $GelfMessage
+      $GelfParams = @{} + $PsBoundParameters
+      $GelfParams.Remove('GelfServer')
+      $GelfParams.Remove('Port')
+      $GelfParams.Remove('Encrypt')
+
+      $GelfMessage = New-PSGelfObject @GelfParams      
+      Send-PSGelfTCPFromObject -GelfServer $GelfServer -Port $Port -Encrypt:$Encrypt.IsPresent -GelfMessage $GelfMessage
     }
 }

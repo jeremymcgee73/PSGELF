@@ -3,7 +3,7 @@
     [cmdletbinding()]
     Param
     (
-        [Parameter(Mandatory )][PSCustomObject]$GelfMessage
+        [Parameter(Mandatory)][PSCustomObject]$GelfMessage
     )
 
         #Most of these changes are so you can easily pipe Get-WinEvent to this function.

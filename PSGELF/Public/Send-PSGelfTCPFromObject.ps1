@@ -27,11 +27,8 @@ function Send-PSGelfTCPFromObject
     Param
     (
         [Parameter(Mandatory)][String]$GelfServer,
-
         [Parameter(Mandatory)][Int]$Port,
-
         [Parameter()][Switch]$Encrypt,
-
         [Parameter(Mandatory,ValueFromPipeline)][PSCustomObject]$GelfMessage
     )
 

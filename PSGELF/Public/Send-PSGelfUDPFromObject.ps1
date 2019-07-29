@@ -12,9 +12,7 @@ function Send-PSGelfUDPFromObject
     Param
     (
         [Parameter(Mandatory)][String]$GelfServer,
-
         [Parameter(Mandatory)][Int]$Port,
-
         [Parameter(Mandatory,ValueFromPipeline )][PSCustomObject]$GelfMessage
     )
 

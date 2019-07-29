@@ -13,25 +13,15 @@ function Send-PSGelfUDP
     Param
     (
         [Parameter(Mandatory)][String]$GelfServer,
-
         [Parameter(Mandatory)][Int]$Port,
-
         [Parameter()][String]$HostName,
-
         [Parameter(Mandatory)][String]$ShortMessage,
-
         [Parameter()][String]$FullMessage,
-
         [Parameter()][System.DateTime]$DateTime,
-
         [Parameter()][Int]$Level,
-
         [Parameter()][String]$Facility,
-
         [Parameter()][Int]$Line,
-
         [Parameter()][String]$File,
-
         [Parameter()][Hashtable]$AdditionalField
     )
 
@@ -40,8 +30,13 @@ function Send-PSGelfUDP
     }
     Process
     {
-        $GelfMessage = New-PSGelfObject @PsBoundParameters
-        Send-PSGelfUDPFromObject -GelfServer $GelfServer -Port $Port -GelfMessage $GelfMessage
+      $GelfParams = @{} + $PsBoundParameters
+      $GelfParams.Remove('GelfServer')
+      $GelfParams.Remove('Port')
+      $GelfParams.Remove('Encrypt')
+
+      $GelfMessage = New-PSGelfObject @GelfParams
+      Send-PSGelfUDPFromObject -GelfServer $GelfServer -Port $Port -GelfMessage $GelfMessage
     }
     End
     {
