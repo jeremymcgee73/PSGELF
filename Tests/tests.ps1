@@ -2,7 +2,7 @@ if(Get-Module PSGELF) {
     Remove-Module PSGELF
 }
 
-Import-Module C:\Users\jmcgee\Documents\GitHub\PSGELF\PSGELF\PSGELF.psd1
+Import-Module .\PSGELF\PSGELF.psd1
 
 #These Pester tests are not the prettiest. But, they get the job done. They are a combintation of function and intergration tests.
 #This script WILL send data to your graylog server.
