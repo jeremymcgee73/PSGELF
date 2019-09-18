@@ -51,7 +51,7 @@ function Send-PSGelfTCPFromObject
             #It also adds and underscore to non default fields.
             $RepairedGelfMessage = Repair-PSGelfObject -GelfMessage $GelfMessage
 
-            $ConvertedJSON = [System.Text.Encoding]::ASCII.GetBytes($($RepairedGelfMessage | ConvertTo-Json -Compress))
+            $ConvertedJSON = [System.Text.Encoding]::UTF8.GetBytes($($RepairedGelfMessage | ConvertTo-Json -Compress))
 
             #Graylog needs a NULL byte on the end of the data packet
             $ConvertedJSON = $ConvertedJSON + [Byte]0x00
