@@ -37,7 +37,7 @@ function Send-PSGelfUDPFromObject
         #It also adds and underscore to non default fields.
         $RepairedGelfMessage = Repair-PSGelfObject -GelfMessage $GelfMessage
 
-        $CompressedJSON = [System.Text.Encoding]::ASCII.GetBytes($($RepairedGelfMessage | ConvertTo-Json -Compress))
+        $CompressedJSON = [System.Text.Encoding]::UTF8.GetBytes($($RepairedGelfMessage | ConvertTo-Json -Compress))
 
         #We only need to chunk if the packet is greater than 8192 bytes. 
         #...I left some wiggle room.

@@ -28,12 +28,11 @@
             $GelfMessage = $GelfMessage | Select-Object @{Name="_EventID";Expression={$_."ID"}},* -ExcludeProperty ID
         }
 
-        if($GelfMessage.ShortMessage)
-        {
-            $GelfMessage = $GelfMessage | Select-Object @{Name="short_message";Expression={$_."ShortMessage"}},* -ExcludeProperty ShortMessage
-        }
-        else {
-            if($GelfMessage.Message) {
+        if (!$GelfMessage.short_message) {
+            if($GelfMessage.ShortMessage) {
+                $GelfMessage = $GelfMessage | Select-Object @{Name="short_message";Expression={$_."ShortMessage"}},* -ExcludeProperty ShortMessage
+            }
+            elseif($GelfMessage.Message) {
                 $GelfMessage = $GelfMessage | Select-Object @{Name="short_message";Expression={$_."Message"}},* -ExcludeProperty Message
                 Write-Verbose 'ShortMessage is a required property. The property Message has been renamed ShortMessage to meet the requirments.'
             }
