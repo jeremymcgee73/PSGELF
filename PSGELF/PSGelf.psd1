@@ -12,7 +12,7 @@
 RootModule = '.\PSGELF.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.20'
+ModuleVersion = '1.21'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
