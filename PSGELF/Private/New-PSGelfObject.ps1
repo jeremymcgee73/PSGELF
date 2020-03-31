@@ -32,7 +32,7 @@
             $Message | Add-Member –MemberType NoteProperty –Name full_message –Value $FullMessage
         }
         if ($DateTime) {
-            $TimeStampConversion = (Get-Date).ToUniversalTime().Subtract((Get-Date -Year 1970 -Month 1 -Day 1)).TotalSeconds
+            $TimeStampConversion = (Get-Date -Date $DateTime).ToUniversalTime().Subtract((Get-Date -Year 1970 -Month 1 -Day 1)).TotalSeconds
             $Message | Add-Member –MemberType NoteProperty –Name timestamp  –Value $TimeStampConversion
         }
         if ($Level ) {
